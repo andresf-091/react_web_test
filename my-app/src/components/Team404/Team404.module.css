@@ -1,0 +1,45 @@
+@media (orientation: landscape) {
+    .team404 {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background: conic-gradient(from -90deg at 50% 50%, #deffa1 0deg, #406770 360deg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 230px 193px;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 96px;
+        color: #000;
+        font-family: Montserrat;
+    }
+}
+
+@media (orientation: portrait) {
+    .team404 {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background: conic-gradient(from -90deg at 50% 50%, #deffa1 0deg, #406770 360deg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        padding: 100px 50px;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 50px;
+        color: #000;
+        font-family: Montserrat;
+    }
+}
+
+.team {
+    position: relative;
+    letter-spacing: 0.05em;
+    font-weight: 100;
+}
