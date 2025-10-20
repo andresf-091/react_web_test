@@ -6,7 +6,7 @@ import Register from './components/Register/Register';
 const App: React.FC = () => {
   return (
     <div>
-      <Login />
+      <Register />
     </div>
   );
 };
