@@ -77,6 +77,7 @@ const Home: FunctionComponent = () => {
 					</div>
 					<div className={styles.div8}>
 						{result || '404'}
+						{isLoading && <div className={styles.loader}>генерация</div>}
 					</div>
 					<div className={styles.div3}>
 						<button className={styles.div4} onClick={handleGenerate}>
