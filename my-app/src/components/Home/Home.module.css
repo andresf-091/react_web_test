@@ -1,0 +1,532 @@
+.div4,
+.div6 {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+
+
+    width: 336px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.home {
+    width: 100%;
+    position: relative;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 96px;
+    color: #fff;
+    font-family: 'Neue Machina';
+}
+
+.menuParent {
+    flex: 1;
+    border: 2px solid #383838;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.menu {
+    align-self: stretch;
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    z-index: 0;
+}
+
+.groupIcon {
+    height: 50px;
+    width: 50px;
+    position: relative;
+}
+
+.gen {
+    align-self: end;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 25px;
+    z-index: 1;
+    text-align: right;
+    color: rgba(255, 255, 255, 1);
+}
+
+.div {
+    align-self: stretch;
+    position: relative;
+    font-size: 120px;
+    line-height: 0.5;
+    padding-bottom: 60px;
+}
+
+.opr {
+    align-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 25px;
+    z-index: 2;
+    text-align: right;
+    font-size: 20px;
+    color: rgba(127, 127, 134, 0.57);
+}
+
+.homeDiv {
+    align-self: end;
+    position: relative;
+    line-height: 100%;
+    width: 100%;
+}
+
+.span {
+    color: rgba(219, 219, 219, 0.78);
+}
+
+.frameEl {
+    align-self: center;
+    height: 130vh;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    gap: 300px;
+    z-index: 3;
+    font-size: 24px;
+}
+
+.wrapper {
+    position: absolute;
+    top: 1000px;
+    display: flex;
+    align-items: flex-start;
+    padding: 43px 10px;
+    font-size: 40px;
+}
+
+.div2 {
+    width: 887px;
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.homeSpan {
+    color: #f5995a;
+}
+
+.frameElChild {
+    position: absolute;
+    top: calc(50% - 489.98px);
+    left: calc(50% - 417px);
+    filter: blur(200px);
+    border-radius: 50%;
+    background: radial-gradient(50% 50% at 50% 50%, #fd641bf2 37.02%, rgba(255, 255, 255, 0.95));
+    width: 834px;
+    height: 789px;
+    opacity: 0.3;
+}
+
+.div3 {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'TT Travels';
+}
+
+.div4 {
+    background-color: #fff;
+    width: 336px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.div5 {
+    font-weight: 500;
+    color: #000;
+}
+
+.div6 {
+    width: 336px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: #ffffff solid 1px;
+    box-sizing: border-box;
+}
+
+.div7 {
+    display: inline-block;
+    color: white;
+}
+
+.div8 {
+    position: realtive;
+    margin-top: 50px;
+    font-size: 220px;
+    color: #fd641b;
+    font-family: "Neue Machina Ultrabold";
+    text-align: center;
+}
+
+.soundWave {
+    width: 100;
+    position: relative;
+    margin-top: 100px;
+}
+
+.elGen {
+    position: absolute;
+    top: 0%;
+    left: 12%;
+}
+
+.elGenChild {
+    position: absolute;
+    filter: blur(100px);
+    border-radius: 50%;
+    background: radial-gradient(50% 50% at 50% 50%, #fff, #fff);
+    width: 300px;
+    height: 300px;
+    opacity: 0.2;
+    top: -100px;
+}
+
+.p {
+    margin: 0;
+}
+
+.p2 {
+    color: #fd641b;
+}
+
+.div10 {
+    position: relative;
+    align-self: stretch;
+    height: 100%;
+    position: relative;
+    z-index: 4;
+    font-size: 28px;
+    color: #ff9e42;
+}
+
+.child {
+    position: relative;
+    margin-top: -190px;
+    width: 100%;
+    height: 600px;
+}
+
+.div11 {
+    position: absolute;
+    top: 64.5px;
+    left: 139.4px;
+    width: 595px;
+    height: 316.9px;
+}
+
+.div12 {
+    position: absolute;
+    top: calc(50% - 33.5px);
+    left: calc(50% - 291px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.div13 {
+    width: 563px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.txt {
+    width: 100%;
+}
+
+.span3 {
+    color: #000;
+}
+
+.icon {
+    width: 1329.3px;
+    position: absolute;
+    margin: 0 !important;
+    top: 2350px;
+    left: calc(50% - 664.78px);
+    max-height: 100%;
+    object-fit: contain;
+    z-index: 5;
+}
+
+.div14 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 67px 10px;
+    z-index: 6;
+    font-size: 32px;
+}
+
+.div15 {
+    width: 1162px;
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.div16 {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+    z-index: 7;
+}
+
+.div17 {
+    height: 236px;
+    width: 274px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-sizing: border-box;
+}
+
+.div20 {
+    align-self: stretch;
+    padding: 25px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 130px;
+    z-index: 8;
+    font-size: 20px;
+    font-family: 'Neue Machina';
+}
+
+.typeFloat64 {
+    position: relative;
+    font-size: 18px;
+}
+
+.a10845841 {
+    align-self: stretch;
+    position: relative;
+    white-space: pre-wrap;
+}
+
+.div28 {
+    align-self: stretch;
+    position: relative;
+    color: #fd641b;
+}
+
+.span4 {
+    color: #7f7f86;
+}
+
+.v {
+    height: 260px;
+    width: 238px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon2 {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.featuresContainer {
+    position: relative;
+    display: inline-block;
+    color: #fd641b;
+    font-size: 30px;
+}
+
+.span4 {
+    color: #fff;
+}
+
+.icon3 {
+    position: relative;
+    width: 25px;
+    flex-shrink: 0;
+    padding: 30px;
+}
+
+.blake2b {
+    position: relative;
+    font-size: 40px;
+    color: #fff;
+    font-family: 'Neue Machina';
+    text-align: start;
+}
+
+.hashSeed {
+    position: relative;
+    font-size: 50px;
+    color: #fff;
+    font-family: 'Neue Machina';
+    text-align: start;
+}
+
+.hashSeedParent {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    padding: 0px 0px 0px 480px;
+    gap: 55px;
+    z-index: 9;
+}
+
+.cloud1 {
+    position: absolute;
+    top: calc(50% - 120px);
+    left: calc(50% + 130px);
+    filter: blur(50px);
+    border-radius: 50%;
+    background: radial-gradient(50% 50% at 50% 50%, #fd641bf2 37.02%);
+    width: 200px;
+    height: 200px;
+    opacity: 0.3;
+}
+
+.cloud2 {
+    position: absolute;
+    top: calc(50% - 130px);
+    left: calc(50% + 450px);
+    filter: blur(50px);
+    border-radius: 50%;
+    background: radial-gradient(50% 50% at 50% 50%, #fd641bf2 37.02%);
+    width: 200px;
+    height: 200px;
+    opacity: 0.3;
+}
+
+.describtion1 {
+    position: relative;
+    font-size: 20px;
+    padding: 0px 0px 0px 0px;
+    color: #f5995a;
+    font-family: 'Neue Machina';
+    text-align: center;
+}
+
+.describtion2 {
+    position: relative;
+    font-size: 20px;
+    padding: 0px 0px 0px 0px;
+    color: #f5995a;
+    font-family: 'Neue Machina';
+    text-align: center;
+}
+
+.blake2bParent {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    padding: 0px 0px 0px 250px;
+    gap: 50px;
+    z-index: 9;
+}
+
+.icon4 {
+    position: relative;
+    width: 300px;
+    flex-shrink: 0;
+    padding: -100px;
+}
+
+.hashSeedChild {
+    position: relative;
+    font-size: 30px;
+    color: #474747;
+    font-family: 'Neue Machina';
+    text-align: center;
+}
+
+.addon {
+    position: absolute;
+    font-size: 100px;
+    color: #474747;
+    font-family: 'Neue Machina';
+    text-align: start;
+}
+
+.arrowWave {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.describtion2 {
+    position: relative;
+    font-size: 20px;
+    padding: 0px 0px 0px 0px;
+    color: #f5995a;
+    font-family: 'Neue Machina';
+    text-align: center;
+}
+
+.rngText {
+    position: relative;
+    font-size: 40px;
+    color: #fff;
+    font-family: 'Neue Machina';
+    text-align: center;
+    margin: 30px 0;
+}
+
+.finalNumber {
+    position: relative;
+    font-size: 220px;
+    color: #fd641b;
+    font-family: "Neue Machina Ultrabold";
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.entropyText {
+    position: relative;
+    font-size: 20px;
+    color: #f5995a;
+    font-family: 'Neue Machina';
+    text-align: center;
+    margin: 20px 0;
+}

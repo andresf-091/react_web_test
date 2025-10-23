@@ -1,15 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,500;0,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Neue+Machina:ital,wght@0,400;0,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=TT+Travels:ital,wght@0,500&display=swap');
 
+@font-face {
+  font-family: 'Neue Machina Light';
+  src: url('./assets/fonts/PPNeueMachina-Light.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Machina';
+  src: url('./assets/fonts/PPNeueMachina-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Machina Ultrabold';
+  src: url('./assets/fonts/PPNeueMachina-Ultrabold.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: 'TT Travels';
+  src: url('./assets/fonts/TT-Travels-Medium.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 html,
 body,
 #root {
-  height: 100%;
-  width: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 
