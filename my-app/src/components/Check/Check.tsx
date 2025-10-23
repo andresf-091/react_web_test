@@ -53,7 +53,7 @@ const Check: FunctionComponent = () => {
 
 			console.log('Check - Отправляем запрос на NIST проверку...');
 
-			const response = await fetch('https://404-team.ru:8000/api/v1/nist/check', {
+			const response = await fetch('http://404-team.ru:8000/api/v1/nist/check', {
 				method: 'POST',
 				body: formData,
 			});
