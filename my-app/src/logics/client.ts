@@ -5,7 +5,7 @@ import type {
     NistResponse,
 } from './types';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://404-team.ru:8000/api/v1';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://404-team.ru/api/v1';
 
 const request = async <T>(
     endpoint: string,

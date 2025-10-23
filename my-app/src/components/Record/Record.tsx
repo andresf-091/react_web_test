@@ -100,7 +100,7 @@ const Record: FunctionComponent = () => {
 			console.log('Record - Размер аудио файла:', recordedAudio.size, 'байт');
 			console.log('Record - Тип аудио файла:', recordedAudio.type);
 
-			const response = await fetch('http://404-team.ru:8000/api/v1/rng/generate', {
+			const response = await fetch('https://404-team.ru/api/v1/rng/generate', {
 				method: 'POST',
 				body: formData,
 			});
