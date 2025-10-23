@@ -1,3 +1,15 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
 .div4,
 .div6 {
     background: none;
@@ -31,6 +43,9 @@
     font-size: 96px;
     color: #fff;
     font-family: 'Neue Machina';
+    overflow-x: hidden;
+    max-width: 100vw;
+    margin: 0;
 }
 
 .menuParent {
@@ -41,6 +56,8 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    max-width: 100%;
+    width: 100%;
 }
 
 .menu {
@@ -184,7 +201,7 @@
 }
 
 .div8 {
-    position: realtive;
+    position: relative;
     margin-top: 50px;
     font-size: 220px;
     color: #fd641b;
@@ -283,6 +300,9 @@
     max-height: 100%;
     object-fit: contain;
     z-index: 5;
+    max-width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .div14 {
@@ -529,4 +549,93 @@
     font-family: 'Neue Machina';
     text-align: center;
     margin: 20px 0;
+}
+
+.seedInfo {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.seedLabel {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 5px;
+    font-family: 'TT Travels';
+}
+
+.seedValue {
+    font-size: 16px;
+    color: #fff;
+    font-family: monospace;
+    word-break: break-all;
+}
+
+.graphsContainer {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.graphsLabel {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 10px;
+    font-family: 'TT Travels';
+}
+
+.graphs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.graphImage {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    object-fit: contain;
+}
+
+.spectrumGraph {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.singleNumber {
+    font-size: 220px;
+    color: #fd641b;
+    font-family: "Neue Machina Ultrabold";
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.multipleNumbers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.numberItem {
+    font-size: 120px;
+    color: #fd641b;
+    font-family: "Neue Machina Ultrabold";
+    text-align: center;
+    padding: 10px;
+    background: rgba(253, 100, 27, 0.1);
+    border-radius: 10px;
+    border: 2px solid rgba(253, 100, 27, 0.3);
+    min-width: 200px;
 }

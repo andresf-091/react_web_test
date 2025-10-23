@@ -13,7 +13,7 @@ const FiltersModal = ({ isOpen, onClose, onGenerateSuccess }: FiltersModalProps)
     const [repeat, setRepeat] = useState(false);
     const [base, setBase] = useState(2);
     const [rangeFrom, setRangeFrom] = useState(1);
-    const [rangeTo, setRangeTo] = useState(10_000_000);
+    const [rangeTo, setRangeTo] = useState(1000);
     const [sequenceLength, setSequenceLength] = useState(1);
 
     const [loading, setLoading] = useState(false);
@@ -24,6 +24,11 @@ const FiltersModal = ({ isOpen, onClose, onGenerateSuccess }: FiltersModalProps)
     const handleSubmit = async () => {
         if (rangeFrom >= rangeTo) {
             alert('Начало диапазона должно быть меньше конца');
+            return;
+        }
+
+        if (!rangeFrom || !rangeTo) {
+            alert('Диапазон чисел обязателен для заполнения');
             return;
         }
 
@@ -41,11 +46,19 @@ const FiltersModal = ({ isOpen, onClose, onGenerateSuccess }: FiltersModalProps)
                 format: 'json' as const,
             };
 
+            console.log('FiltersModal - Отправляем запрос с параметрами:', requestData);
+
             const response = await generateRandomNumbers(requestData);
+            
+            console.log('FiltersModal - Ответ от бекенда:', response);
+            console.log('FiltersModal - Сгенерированные числа:', response.numbers);
+            console.log('FiltersModal - Сид:', response.seed);
+            console.log('FiltersModal - Графики:', response.graphs);
+            
             onGenerateSuccess(response); // Передаём результат в родительский компонент
             onClose(); // Закрываем модалку после успешной генерации
         } catch (err) {
-            console.error('Ошибка генерации:', err);
+            console.error('FiltersModal - Ошибка генерации:', err);
             setError(err instanceof Error ? err.message : 'Неизвестная ошибка');
         } finally {
             setLoading(false);
@@ -55,40 +68,59 @@ const FiltersModal = ({ isOpen, onClose, onGenerateSuccess }: FiltersModalProps)
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                <button className={styles.closeButton} onClick={onClose}>
-                    &times;
-                </button>
-
-                <h2 className={styles.title}>фильтры</h2>
+                <h2 className={styles.title}>Фильтры</h2>
 
                 {/* Повторение чисел */}
                 <div className={styles.filterRow}>
                     <span className={styles.label}>повторение чисел</span>
-                    <input
-                        type="checkbox"
-                        checked={repeat}
-                        onChange={(e) => setRepeat(e.target.checked)}
-                        className={styles.checkbox}
-                    />
+                    <div className={styles.checkboxContainer}>
+                        <input
+                            type="checkbox"
+                            checked={repeat}
+                            onChange={(e) => setRepeat(e.target.checked)}
+                            className={styles.checkbox}
+                        />
+                    </div>
                 </div>
 
                 {/* Система счисления */}
                 <div className={styles.filterRow}>
                     <span className={styles.label}>система счисления</span>
-                    <input
-                        type="number"
-                        value={base}
-                        onChange={(e) => setBase(Number(e.target.value))}
-                        min={2}
-                        max={16}
-                        className={styles.numberInput}
-                    />
+                    <div className={styles.rangeContainer}>
+                        <input
+                            type="number"
+                            value={base}
+                            onChange={(e) => setBase(Number(e.target.value))}
+                            min={2}
+                            max={16}
+                            className={styles.numberInput}
+                        />
+                        <div className={styles.sliderContainer}>
+                            <input
+                                type="range"
+                                min={2}
+                                max={16}
+                                value={base}
+                                onChange={(e) => setBase(Number(e.target.value))}
+                                className={styles.slider}
+                            />
+                        </div>
+                        <input
+                            type="number"
+                            value={16}
+                            readOnly
+                            className={styles.numberInput}
+                        />
+                        <div className={styles.checkboxContainer}>
+                            <input type="checkbox" className={styles.checkbox} />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Диапазон числа */}
                 <div className={styles.filterRow}>
                     <span className={styles.label}>диапазон числа</span>
-                    <div className={styles.rangeGroup}>
+                    <div className={styles.rangeContainer}>
                         <input
                             type="number"
                             value={rangeFrom}
@@ -97,29 +129,62 @@ const FiltersModal = ({ isOpen, onClose, onGenerateSuccess }: FiltersModalProps)
                             max={rangeTo - 1}
                             className={styles.numberInput}
                         />
-                        <span className={styles.rangeSeparator}>—</span>
+                        <div className={styles.sliderContainer}>
+                            <input
+                                type="range"
+                                min={1}
+                                max={10000}
+                                value={rangeFrom}
+                                onChange={(e) => setRangeFrom(Number(e.target.value))}
+                                className={styles.slider}
+                            />
+                        </div>
                         <input
                             type="number"
                             value={rangeTo}
                             onChange={(e) => setRangeTo(Number(e.target.value))}
                             min={rangeFrom + 1}
-                            max={10_000_000}
+                            max={10000}
                             className={styles.numberInput}
                         />
+                        <div className={styles.checkboxContainer}>
+                            <input type="checkbox" className={styles.checkbox} />
+                        </div>
                     </div>
                 </div>
 
                 {/* Длина последовательности */}
                 <div className={styles.filterRow}>
                     <span className={styles.label}>длина последовательности</span>
-                    <input
-                        type="number"
-                        value={sequenceLength}
-                        onChange={(e) => setSequenceLength(Number(e.target.value))}
-                        min={1}
-                        max={10_000_000}
-                        className={styles.numberInput}
-                    />
+                    <div className={styles.rangeContainer}>
+                        <input
+                            type="number"
+                            value={sequenceLength}
+                            onChange={(e) => setSequenceLength(Number(e.target.value))}
+                            min={1}
+                            max={10_000_000}
+                            className={styles.numberInput}
+                        />
+                        <div className={styles.sliderContainer}>
+                            <input
+                                type="range"
+                                min={1}
+                                max={10_000_000}
+                                value={sequenceLength}
+                                onChange={(e) => setSequenceLength(Number(e.target.value))}
+                                className={styles.slider}
+                            />
+                        </div>
+                        <input
+                            type="number"
+                            value={10_000_000}
+                            readOnly
+                            className={styles.numberInput}
+                        />
+                        <div className={styles.checkboxContainer}>
+                            <input type="checkbox" className={styles.checkbox} />
+                        </div>
+                    </div>
                 </div>
 
                 {error && <div className={styles.error}>{error}</div>}

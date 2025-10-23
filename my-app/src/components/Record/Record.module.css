@@ -1,0 +1,520 @@
+.home {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 96px;
+    color: #fff;
+    font-family: 'Neue Machina';
+}
+
+.menuParent {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.groupIcon {
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 30px;
+    height: 30px;
+}
+
+.groupIcon:hover {
+    opacity: 0.7;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #000;
+}
+
+.modalTitle {
+    font-size: 24px;
+    color: #000;
+    margin-bottom: 30px;
+    font-family: 'TT Travels';
+    line-height: 1.4;
+}
+
+.modalTitle b {
+    font-weight: bold;
+}
+
+.soundWaveContainer {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.soundWaveIcon {
+    width: 300px;
+    height: auto;
+    opacity: 0.8;
+}
+
+.microphoneContainer {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.microphoneIcon {
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    border: 2px solid #ff9e42;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.microphoneIcon.recording {
+    background: #ff9e42;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.modalActions {
+    margin-top: 30px;
+}
+
+.generateButton {
+    background: #ff9e42;
+    color: #fff;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'TT Travels';
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.generateButton:hover:not(:disabled) {
+    background: #ff8c2a;
+    transform: translateY(-2px);
+}
+
+.generateButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.recordingIndicator {
+    margin-top: 20px;
+}
+
+.recordingText {
+    color: #ff6b6b;
+    font-size: 16px;
+    font-family: 'TT Travels';
+    font-weight: 500;
+}
+
+.frame {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 25px;
+    z-index: 2;
+    text-align: center;
+    font-size: 20px;
+    color: rgba(127, 127, 134, 0.57);
+}
+
+.frameElChild {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(61.22% 61.22% at 50% 44.49%, rgba(253, 100, 27, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
+    opacity: 0.1;
+    filter: blur(100px);
+    z-index: -1;
+}
+
+.div {
+    width: 1105px;
+    position: relative;
+    font-size: 58px;
+    text-align: center;
+    display: inline-block;
+    color: #fff;
+    font-family: 'Neue Machina';
+    margin-bottom: 40px;
+}
+
+.b {
+    color: #ff9e42;
+}
+
+.soundWaveIcon {
+    width: 200px;
+    height: 200px;
+    margin: 20px 0;
+    opacity: 0.7;
+}
+
+.recordingPanel {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px 0;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.recordingControls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.recordButton, .stopButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 18px 40px;
+    width: 300px;
+    height: 74px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.recordButton {
+    background: #ff6b6b;
+    color: #fff;
+}
+
+.recordButton:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
+}
+
+.stopButton {
+    background: #4caf50;
+    color: #fff;
+}
+
+.stopButton:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+.recordButtonText, .stopButtonText {
+    font-family: 'TT Travels';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.recordingIndicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.recordingDot {
+    width: 12px;
+    height: 12px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.recordingText {
+    color: #ff6b6b;
+    font-size: 18px;
+    font-family: 'TT Travels';
+    font-weight: 500;
+}
+
+.recordedAudio {
+    width: 100%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.audioInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.audioLabel {
+    color: #fff;
+    font-size: 16px;
+    font-family: 'TT Travels';
+}
+
+.audioDuration {
+    color: #ff9e42;
+    font-size: 16px;
+    font-family: 'TT Travels';
+    font-weight: 500;
+}
+
+.audioPlayer {
+    width: 100%;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.audioActions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.generateButton, .clearButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 30px;
+    height: 50px;
+    border-radius: 8px;
+    font-family: 'TT Travels';
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.generateButton {
+    background: #ff9e42;
+    color: #000;
+}
+
+.generateButton:hover:not(:disabled) {
+    background: #ff8c2a;
+    transform: translateY(-1px);
+}
+
+.generateButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.clearButton {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.clearButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.error {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-family: 'TT Travels';
+    text-align: center;
+}
+
+.resultContainer {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 30px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resultTitle {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: 'Neue Machina';
+    text-align: center;
+}
+
+.resultNumber {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.singleNumber {
+    font-size: 120px;
+    color: #fd641b;
+    font-family: "Neue Machina Ultrabold";
+    text-align: center;
+}
+
+.multipleNumbers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.numberItem {
+    font-size: 80px;
+    color: #fd641b;
+    font-family: "Neue Machina Ultrabold";
+    text-align: center;
+    padding: 15px;
+    background: rgba(253, 100, 27, 0.1);
+    border-radius: 10px;
+    border: 2px solid rgba(253, 100, 27, 0.3);
+    min-width: 200px;
+}
+
+.seedInfo {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.seedLabel {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 8px;
+    font-family: 'TT Travels';
+}
+
+.seedValue {
+    font-size: 18px;
+    color: #fff;
+    font-family: monospace;
+    word-break: break-all;
+}
+
+.graphContainer {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.graphLabel {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 15px;
+    font-family: 'TT Travels';
+    text-align: center;
+}
+
+.graphImage {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}

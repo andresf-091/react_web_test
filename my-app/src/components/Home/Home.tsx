@@ -1,5 +1,6 @@
 import type { FunctionComponent } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FiltersModal from '../FiltersModal/FiltersModal';
 import type { GenerateResponse } from '../../logics/types';
 import { generateRandomNumbers } from '../../logics/client';
@@ -18,7 +19,10 @@ import SoundWave from '../../assets/icons/SoundWave.svg'
 
 
 const Home: FunctionComponent = () => {
-	const [result, setResult] = useState<string | null>(null);
+	const navigate = useNavigate();
+	const [result, setResult] = useState<string | string[] | null>(null);
+	const [seed, setSeed] = useState<string | null>(null);
+	const [graphs, setGraphs] = useState<string[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
@@ -27,17 +31,27 @@ const Home: FunctionComponent = () => {
 		try {
 			// Вызываем через API-клиент
 			const response: GenerateResponse = await generateRandomNumbers({
-				from_num: '0',
+				from_num: '1',
 				to_num: '1000',
 				count: 1,
 				base: 10,
 				uniq_only: true,
 				format: 'json',
 			});
-			setResult(response.numbers?.[0] || '404');
+			
+			console.log('Home - Ответ от бекенда:', response);
+			console.log('Home - Сгенерированные числа:', response.numbers);
+			console.log('Home - Сид:', response.seed);
+			console.log('Home - Графики:', response.graphs);
+			
+			setResult(response.numbers?.length === 1 ? response.numbers[0] : response.numbers || '404');
+			setSeed(response.seed || null);
+			setGraphs(response.graphs || []);
 		} catch (err) {
-			console.error(err);
+			console.error('Home - Ошибка при генерации:', err);
 			setResult('ERROR');
+			setSeed(null);
+			setGraphs([]);
 		} finally {
 			setIsLoading(false);
 		}
@@ -48,7 +62,22 @@ const Home: FunctionComponent = () => {
 	};
 
 	const handleGenerateSuccess = (data: GenerateResponse) => {
-		setResult(data.numbers?.[0] || '404');
+		console.log('Home - Ответ от фильтров:', data);
+		console.log('Home - Сгенерированные числа из фильтров:', data.numbers);
+		console.log('Home - Сид из фильтров:', data.seed);
+		console.log('Home - Графики из фильтров:', data.graphs);
+		
+		setResult(data.numbers?.length === 1 ? data.numbers[0] : data.numbers || '404');
+		setSeed(data.seed || null);
+		setGraphs(data.graphs || []);
+	};
+
+	const handleGoToCheck = () => {
+		navigate('/check');
+	};
+
+	const handleGoToRecord = () => {
+		navigate('/record');
 	};
 	return (
 		<div className={styles.home}>
@@ -76,8 +105,41 @@ const Home: FunctionComponent = () => {
 						</div>
 					</div>
 					<div className={styles.div8}>
-						{result || '404'}
+						{result ? (
+							Array.isArray(result) ? (
+								<div className={styles.multipleNumbers}>
+									{result.map((num, index) => (
+										<div key={index} className={styles.numberItem}>{num}</div>
+									))}
+								</div>
+							) : (
+								<div className={styles.singleNumber}>{result}</div>
+							)
+						) : (
+							<div className={styles.singleNumber}>404</div>
+						)}
 						{isLoading && <div className={styles.loader}>генерация</div>}
+						{seed && (
+							<div className={styles.seedInfo}>
+								<div className={styles.seedLabel}>Сид:</div>
+								<div className={styles.seedValue}>{seed}</div>
+							</div>
+						)}
+						{graphs.length > 0 && (
+							<div className={styles.graphsContainer}>
+								<div className={styles.graphsLabel}>Графики звуков:</div>
+								<div className={styles.graphs}>
+									{graphs.map((graph, index) => (
+										<img 
+											key={index} 
+											src={graph} 
+											alt={`График звука ${index + 1}`}
+											className={styles.graphImage}
+										/>
+									))}
+								</div>
+							</div>
+						)}
 					</div>
 					<div className={styles.div3}>
 						<button className={styles.div4} onClick={handleGenerate}>
@@ -85,6 +147,12 @@ const Home: FunctionComponent = () => {
 						</button>
 						<button className={styles.div6} onClick={handleOpenFilters}>
 							<div className={styles.div7}>фильтры</div>
+						</button>
+						<button className={styles.div6} onClick={handleGoToCheck}>
+							<div className={styles.div7}>проверить</div>
+						</button>
+						<button className={styles.div6} onClick={handleGoToRecord}>
+							<div className={styles.div7}>записать</div>
 						</button>
 					</div>
 					<img src={SoundWave} draggable="false" className={styles.soundWave} alt="" />
@@ -104,9 +172,15 @@ const Home: FunctionComponent = () => {
 					<div className={styles.div15}>Превращаем колебания в частотные спектры</div>
 				</div>
 				<div className={styles.div16}>
-					<div className={styles.div17} />
-					<div className={styles.div17} />
-					<div className={styles.div17} />
+					<div className={styles.div17}>
+						{graphs[0] && <img src={graphs[0]} alt="График звука 1" className={styles.spectrumGraph} />}
+					</div>
+					<div className={styles.div17}>
+						{graphs[1] && <img src={graphs[1]} alt="График звука 2" className={styles.spectrumGraph} />}
+					</div>
+					<div className={styles.div17}>
+						{graphs[2] && <img src={graphs[2]} alt="График звука 3" className={styles.spectrumGraph} />}
+					</div>
 				</div>
 				<div className={styles.div20}>
 					<div className={styles.v}>

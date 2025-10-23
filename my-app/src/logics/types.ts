@@ -2,8 +2,8 @@
 
 // RNG
 export interface GenerateRequest {
-    from_num: string;
-    to_num: string;
+    from_num: string; // обязательный параметр
+    to_num: string;   // обязательный параметр
     count?: number;       // default: 5
     base?: number;        // default: 10
     uniq_only?: boolean;  // default: true
@@ -11,7 +11,9 @@ export interface GenerateRequest {
 }
 
 export interface GenerateResponse {
-    numbers: string[]; // или string, если format='txt'
+    numbers: string[]; // массив сгенерированных чисел
+    seed: string; // случайный сид
+    graphs: string[]; // графики звуков в base64 или URL
 }
 
 // NIST
@@ -51,23 +53,17 @@ export const ALL_NIST_TESTS: NistTestType[] = [
 ];
 
 export interface NistRequest {
-    sequence?: string;
+    sequence?: string; // строка из нулей и единиц
+    file?: File; // файл со строкой из нулей и единиц
     included_tests?: NistTestType[];
 }
 
-// Пример ответа от NIST (уточните у бэка, но обычно — объект с результатами)
-export interface NistTestResult {
-    test_name: string;
-    p_value: number;
-    passed: boolean;
-    // ... другие поля, если есть
+// Формат ответа от NIST API - словарь с результатами тестов
+export interface NistTestData {
+    success: boolean;
+    // другие поля теста, если есть
 }
 
 export interface NistResponse {
-    results: NistTestResult[];
-    summary: {
-        total: number;
-        passed: number;
-        failed: number;
-    };
+    [testName: string]: NistTestData;
 }
