@@ -2,6 +2,7 @@ import type { FunctionComponent } from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { GenerateResponse } from '../../logics/types';
+import { generateRandomNumbers } from '../../logics/client';
 
 import styles from './Record.module.css';
 import Chevron from '../../assets/icons/Chevron.svg'
@@ -25,6 +26,11 @@ const Record: FunctionComponent = () => {
 
 	const handleBack = () => {
 		navigate('/');
+	};
+
+	const handleOverlayClick = () => {
+		// После генерации клик по фону снова закрывает окно
+		handleBack();
 	};
 
 	const startRecording = async () => {
@@ -87,32 +93,21 @@ const Record: FunctionComponent = () => {
 		setError(null);
 
 		try {
-			const formData = new FormData();
-			formData.append('audio', recordedAudio, 'recording.wav');
-			formData.append('from_num', '1');
-			formData.append('to_num', '1000');
-			formData.append('count', '1');
-			formData.append('base', '10');
-			formData.append('uniq_only', 'true');
-			formData.append('format', 'json');
-
 			console.log('Record - Отправляем аудио на бекенд...');
 			console.log('Record - Размер аудио файла:', recordedAudio.size, 'байт');
 			console.log('Record - Тип аудио файла:', recordedAudio.type);
 
-			const response = await fetch('https://404-team.ru/api/v1/rng/generate', {
-				method: 'POST',
-				body: formData,
+			// Используем наш API клиент для правильной обработки multipart ответа
+			const data: GenerateResponse = await generateRandomNumbers({
+				from_num: '1',
+				to_num: '1000',
+				count: 1,
+				base: 10,
+				uniq_only: true,
+				format: 'json',
+				audio_file: recordedAudio
 			});
 
-			console.log('Record - Статус ответа:', response.status);
-			console.log('Record - Заголовки ответа:', Object.fromEntries(response.headers.entries()));
-
-			if (!response.ok) {
-				throw new Error(`Ошибка ${response.status}`);
-			}
-
-			const data: GenerateResponse = await response.json();
 			console.log('Record - Ответ от бекенда:', data);
 			console.log('Record - Сгенерированные числа:', data.numbers);
 			console.log('Record - Сид:', data.seed);
@@ -121,6 +116,18 @@ const Record: FunctionComponent = () => {
 			setResult(data.numbers?.length === 1 ? data.numbers[0] : data.numbers || '404');
 			setSeed(data.seed || null);
 			setGraph(data.graphs?.[0] || null);
+			
+			// Сохраняем результаты в localStorage для передачи на главную страницу при закрытии
+			const recordResults = {
+				numbers: data.numbers,
+				seed: data.seed,
+				graphs: data.graphs,
+				executed_sources: data.executed_sources
+			};
+			localStorage.setItem('recordResults', JSON.stringify(recordResults));
+			
+			// НЕ закрываем окно автоматически - пользователь сам решает когда закрыть
+			
 		} catch (err) {
 			console.error('Record - Ошибка при генерации из аудио:', err);
 			setError(err instanceof Error ? err.message : 'Неизвестная ошибка');
@@ -149,7 +156,7 @@ const Record: FunctionComponent = () => {
 				</div>
 				
 				{/* Модальное окно записи звука */}
-				<div className={styles.modalOverlay} onClick={handleBack}>
+				<div className={styles.modalOverlay} onClick={handleOverlayClick}>
 					<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 						<button className={styles.closeButton} onClick={handleBack}>
 							&times;
@@ -220,6 +227,12 @@ const Record: FunctionComponent = () => {
 								<div className={styles.seedValue}>{seed}</div>
 							</div>
 						)}
+						
+						<div className={styles.autoCloseMessage}>
+							✓ Генерация завершена! Результаты отображаются выше.
+							<br />
+							<small style={{opacity: 0.7}}>Нажмите "назад" или кликните по фону для возврата</small>
+						</div>
 
 						{graph && (
 							<div className={styles.graphContainer}>

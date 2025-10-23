@@ -518,3 +518,22 @@
     display: block;
     margin: 0 auto;
 }
+
+.autoCloseMessage {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 8px;
+    color: #4caf50;
+    font-family: 'TT Travels';
+    font-size: 14px;
+    text-align: center;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}

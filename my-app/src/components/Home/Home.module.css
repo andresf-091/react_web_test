@@ -66,7 +66,34 @@ body {
     align-items: flex-start;
     padding: 10px 20px;
     box-sizing: border-box;
-    z-index: 0;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 10px 0;
+    min-width: 150px;
+    z-index: 1001;
+}
+
+.menuItem {
+    padding: 12px 20px;
+    color: #fff;
+    font-family: 'TT Travels';
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menuItem:hover {
+    background: rgba(255, 158, 66, 0.2);
+    color: #ff9e42;
 }
 
 .groupIcon {
@@ -401,6 +428,9 @@ body {
     width: 25px;
     flex-shrink: 0;
     padding: 30px;
+    opacity: 1;
+    z-index: 10;
+    filter: brightness(0) invert(1);
 }
 
 .blake2b {
@@ -638,4 +668,190 @@ body {
     border-radius: 10px;
     border: 2px solid rgba(253, 100, 27, 0.3);
     min-width: 200px;
+}
+
+.sourcesContainer {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sourcesLabel {
+    font-size: 16px;
+    color: #ff9e42;
+    font-family: 'TT Travels';
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.sources {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sourceItem {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sourceName {
+    font-size: 14px;
+    color: #fff;
+    font-family: 'TT Travels';
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.sourceLocation {
+    font-size: 12px;
+    color: #ccc;
+    font-family: 'TT Travels';
+    margin-bottom: 3px;
+}
+
+.sourceArtist {
+    font-size: 12px;
+    color: #ff9e42;
+    font-family: 'TT Travels';
+}
+
+.sourceLink {
+    font-size: 12px;
+    color: #ff9e42;
+    font-family: 'TT Travels';
+    text-decoration: none;
+    margin-top: 5px;
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ff9e42;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.sourceLink:hover {
+    background: #ff9e42;
+    color: #000;
+}
+
+.playingIndicator {
+    color: #ff9e42;
+    font-size: 12px;
+    font-family: 'TT Travels';
+    margin-top: 5px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 0.7; transform: scale(1); }
+}
+
+.playAllContainer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.playButton {
+    background: #ff9e42;
+    color: #000;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'TT Travels';
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sequenceContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.longSequence {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sequenceText {
+    font-size: 14px;
+    color: #fff;
+    font-family: 'TT Travels';
+    text-align: center;
+    word-break: break-all;
+}
+
+.copyButton {
+    background: #ff9e42;
+    color: #000;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: 'TT Travels';
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.copyButton:hover:not(:disabled) {
+    background: #ff6b00;
+    transform: scale(1.05);
+}
+
+.copyButton:disabled {
+    background: #4caf50;
+    color: #fff;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.finalSeed {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    max-width: 800px;
+    width: 100%;
+}
+
+.finalSeed .seedLabel {
+    font-size: 18px;
+    color: #ff9e42;
+    font-family: 'TT Travels';
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.finalSeed .seedValue {
+    font-size: 14px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    word-break: break-all;
+    line-height: 1.4;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }

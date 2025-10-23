@@ -8,12 +8,26 @@ export interface GenerateRequest {
     base?: number;        // default: 10
     uniq_only?: boolean;  // default: true
     format?: 'json' | 'txt'; // default: 'json'
+    audio_file?: File | Blob; // аудио файл для записи
 }
 
 export interface GenerateResponse {
     numbers: string[]; // массив сгенерированных чисел
     seed: string; // случайный сид
     graphs: string[]; // графики звуков в base64 или URL
+    executed_sources?: Array<{
+        id: number;
+        name: string;
+        url: string;
+        ext: string;
+        artist: string;
+        source: string;
+        lat: number;
+        lng: number;
+        link: string;
+        city: string;
+        country: string;
+    }>; // источники звуков
 }
 
 // NIST
@@ -61,7 +75,14 @@ export interface NistRequest {
 // Формат ответа от NIST API - словарь с результатами тестов
 export interface NistTestData {
     success: boolean;
-    // другие поля теста, если есть
+    p_value?: number;
+    error?: string;
+    statistics?: any;
+    results?: Array<{
+        template: number[];
+        p_value: number;
+        success: boolean;
+    }>;
 }
 
 export interface NistResponse {

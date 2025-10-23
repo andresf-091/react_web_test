@@ -2,6 +2,7 @@ import type { FunctionComponent } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { NistResponse } from '../../logics/types';
+import { runNistTests } from '../../logics/client';
 
 import styles from './Check.module.css';
 import Chevron from '../../assets/icons/Chevron.svg'
@@ -41,31 +42,31 @@ const Check: FunctionComponent = () => {
 		setError(null);
 
 		try {
-			const formData = new FormData();
-			
-			if (file) {
-				formData.append('file', file);
-				console.log('Check - Отправляем файл:', file.name, 'размер:', file.size, 'байт');
-			} else if (sequence) {
-				formData.append('sequence', sequence);
-				console.log('Check - Отправляем последовательность:', sequence.substring(0, 100) + (sequence.length > 100 ? '...' : ''));
-			}
-
 			console.log('Check - Отправляем запрос на NIST проверку...');
 
-			const response = await fetch('https://404-team.ru/api/v1/nist/check', {
-				method: 'POST',
-				body: formData,
+			// Используем наш API клиент
+			const data: NistResponse = await runNistTests({
+				sequence: sequence || undefined,
+				file: file || undefined,
+				included_tests: [
+					'frequency',
+					'block_frequency', 
+					'runs',
+					'longest_runs',
+					'matrix_rank',
+					'dft',
+					'template',
+					'overlapping_template',
+					'universal',
+					'linear_complexity',
+					'serial',
+					'approximate_entropy',
+					'cumulative_sums',
+					'random_excursions',
+					'random_excursions_variant'
+				]
 			});
 
-			console.log('Check - Статус ответа:', response.status);
-			console.log('Check - Заголовки ответа:', Object.fromEntries(response.headers.entries()));
-
-			if (!response.ok) {
-				throw new Error(`Ошибка ${response.status}`);
-			}
-
-			const data: NistResponse = await response.json();
 			console.log('Check - Ответ от бекенда:', data);
 			console.log('Check - Количество тестов:', Object.keys(data).length);
 			console.log('Check - Пройденные тесты:', Object.values(data).filter(test => test.success).length);

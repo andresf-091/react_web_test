@@ -1,5 +1,5 @@
 import type { FunctionComponent } from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FiltersModal from '../FiltersModal/FiltersModal';
 import type { GenerateResponse } from '../../logics/types';
@@ -23,11 +23,127 @@ const Home: FunctionComponent = () => {
 	const [result, setResult] = useState<string | string[] | null>(null);
 	const [seed, setSeed] = useState<string | null>(null);
 	const [graphs, setGraphs] = useState<string[]>([]);
+	const [sources, setSources] = useState<Array<{
+		id: number;
+		name: string;
+		url: string;
+		ext: string;
+		artist: string;
+		source: string;
+		lat: number;
+		lng: number;
+		link: string;
+		city: string;
+		country: string;
+	}> | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+	const [isUserGenerated, setIsUserGenerated] = useState(false);
+	const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+	const [currentAudioIndex, setCurrentAudioIndex] = useState(0);
+	const [animatedNumber, setAnimatedNumber] = useState('404');
+	const [loadingNumber, setLoadingNumber] = useState('404');
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [copiedSequence, setCopiedSequence] = useState(false);
+	
+	const audioRefs = useRef<HTMLAudioElement[]>([]);
+	const animationIntervalRef = useRef<number | null>(null);
+
+	// Функция для генерации случайного числа с приоритетом для 404
+	const generateRandomNumber = () => {
+		const random = Math.random();
+		// 404 появляется в 30% случаев
+		if (random < 0.3) {
+			return '404';
+		}
+		// Остальные числа от 1 до 1000
+		return Math.floor(Math.random() * 1000) + 1;
+	};
+
+	// Анимация чисел
+	const startNumberAnimation = () => {
+		if (animationIntervalRef.current) {
+			clearInterval(animationIntervalRef.current);
+		}
+		
+		animationIntervalRef.current = setInterval(() => {
+			setAnimatedNumber(generateRandomNumber().toString());
+		}, 500); // Меняем число каждые 500мс (реже для производительности)
+	};
+
+	// Остановка анимации
+	const stopNumberAnimation = () => {
+		if (animationIntervalRef.current) {
+			clearInterval(animationIntervalRef.current);
+			animationIntervalRef.current = null;
+		}
+	};
+
+	// Анимация загрузки
+	const startLoadingAnimation = () => {
+		const loadingInterval = setInterval(() => {
+			setLoadingNumber(generateRandomNumber().toString());
+		}, 100); // Быстрее чем обычная анимация
+		
+		// Останавливаем через 3 секунды
+		setTimeout(() => {
+			clearInterval(loadingInterval);
+		}, 3000);
+	};
+
+	// Автоматическое воспроизведение аудио после генерации
+	const playAudioSources = async () => {
+		if (!sources || sources.length === 0 || isPlayingAudio) return;
+		
+		console.log('Начинаем воспроизведение аудио источников:', sources.length);
+		setIsPlayingAudio(true);
+		setCurrentAudioIndex(0);
+		
+		// Создаем аудио элементы для каждого источника
+		const audioElements: HTMLAudioElement[] = [];
+		sources.slice(0, 3).forEach((source, index) => {
+			console.log(`Создаем аудио элемент ${index + 1}:`, source.url);
+			const audio = new Audio(source.url);
+			audio.crossOrigin = 'anonymous';
+			audio.volume = 0.7; // Устанавливаем громкость
+			audioElements.push(audio);
+		});
+		
+		audioRefs.current = audioElements;
+		
+		// Воспроизводим по 5 секунд каждый звук
+		for (let i = 0; i < audioElements.length; i++) {
+			console.log(`Воспроизводим источник ${i + 1}/${audioElements.length}`);
+			setCurrentAudioIndex(i);
+			const audio = audioElements[i];
+			
+			try {
+				// Пытаемся воспроизвести
+				const playPromise = audio.play();
+				if (playPromise !== undefined) {
+					await playPromise;
+					console.log(`Аудио ${i + 1} успешно запущено`);
+					await new Promise(resolve => setTimeout(resolve, 5000));
+					audio.pause();
+					audio.currentTime = 0;
+					console.log(`Аудио ${i + 1} остановлено`);
+				}
+			} catch (error) {
+				console.error(`Ошибка воспроизведения аудио ${i + 1}:`, error);
+				// Продолжаем с следующим аудио даже если текущее не воспроизвелось
+			}
+		}
+		
+		console.log('Воспроизведение завершено');
+		setIsPlayingAudio(false);
+		setCurrentAudioIndex(0);
+	};
 
 	const handleGenerate = async () => {
 		setIsLoading(true);
+		stopNumberAnimation(); // Останавливаем анимацию
+		startLoadingAnimation(); // Запускаем анимацию загрузки
+		
 		try {
 			// Вызываем через API-клиент
 			const response: GenerateResponse = await generateRandomNumbers({
@@ -47,6 +163,14 @@ const Home: FunctionComponent = () => {
 			setResult(response.numbers?.length === 1 ? response.numbers[0] : response.numbers || '404');
 			setSeed(response.seed || null);
 			setGraphs(response.graphs || []);
+			setSources(response.executed_sources || null);
+			setIsUserGenerated(true);
+			
+			// Автоматически воспроизводим аудио после генерации
+			setTimeout(() => {
+				playAudioSources();
+			}, 1000);
+			
 		} catch (err) {
 			console.error('Home - Ошибка при генерации:', err);
 			setResult('ERROR');
@@ -67,9 +191,19 @@ const Home: FunctionComponent = () => {
 		console.log('Home - Сид из фильтров:', data.seed);
 		console.log('Home - Графики из фильтров:', data.graphs);
 		
+		stopNumberAnimation(); // Останавливаем анимацию
+		startLoadingAnimation(); // Запускаем анимацию загрузки
+		
 		setResult(data.numbers?.length === 1 ? data.numbers[0] : data.numbers || '404');
 		setSeed(data.seed || null);
 		setGraphs(data.graphs || []);
+		setSources(data.executed_sources || null);
+		setIsUserGenerated(true);
+		
+		// Автоматически воспроизводим аудио после генерации
+		setTimeout(() => {
+			playAudioSources();
+		}, 1000);
 	};
 
 	const handleGoToCheck = () => {
@@ -79,12 +213,99 @@ const Home: FunctionComponent = () => {
 	const handleGoToRecord = () => {
 		navigate('/record');
 	};
+
+	const handleGoToDownload = () => {
+		navigate('/download');
+	};
+
+	// Функция для обработки результатов от записи звука
+	const handleRecordResults = (data: GenerateResponse) => {
+		console.log('Home - Получены результаты от записи:', data);
+		
+		setResult(data.numbers?.length === 1 ? data.numbers[0] : data.numbers || '404');
+		setSeed(data.seed || null);
+		setGraphs(data.graphs || []);
+		setSources(data.executed_sources || null);
+		setIsUserGenerated(true);
+		
+		// Автоматически воспроизводим аудио после генерации
+		setTimeout(() => {
+			playAudioSources();
+		}, 1000);
+	};
+
+	const handleMenuClick = () => {
+		setIsMenuOpen(!isMenuOpen);
+	};
+
+	const handleMenuClose = () => {
+		setIsMenuOpen(false);
+	};
+
+	// Функция для копирования последовательности
+	const handleCopySequence = async () => {
+		if (Array.isArray(result)) {
+			const sequence = result.join(', ');
+			try {
+				await navigator.clipboard.writeText(sequence);
+				setCopiedSequence(true);
+				setTimeout(() => setCopiedSequence(false), 2000);
+			} catch (err) {
+				console.error('Ошибка копирования:', err);
+			}
+		}
+	};
+
+	// Запускаем анимацию чисел при загрузке компонента
+	useEffect(() => {
+		if (!isUserGenerated) {
+			startNumberAnimation();
+		}
+		
+		return () => {
+			stopNumberAnimation();
+			// Очистка аудио при размонтировании
+			audioRefs.current.forEach(audio => {
+				audio.pause();
+				audio.src = '';
+			});
+		};
+	}, [isUserGenerated]);
+
+	// Проверяем результаты от записи звука при загрузке
+	useEffect(() => {
+		const recordResults = localStorage.getItem('recordResults');
+		if (recordResults) {
+			try {
+				const data = JSON.parse(recordResults);
+				handleRecordResults(data);
+				localStorage.removeItem('recordResults'); // Очищаем после использования
+			} catch (error) {
+				console.error('Ошибка парсинга результатов записи:', error);
+				localStorage.removeItem('recordResults');
+			}
+		}
+	}, []);
+
 	return (
 		<div className={styles.home}>
 			<div className={styles.menuParent}>
-				<div className={styles.menu}>
+				<div className={styles.menu} onClick={handleMenuClick}>
 					<img src={Menu} className={styles.groupIcon} alt="" />
 				</div>
+				{isMenuOpen && (
+					<div className={styles.dropdownMenu}>
+						<div className={styles.menuItem} onClick={() => { handleGoToRecord(); handleMenuClose(); }}>
+							записать
+						</div>
+						<div className={styles.menuItem} onClick={() => { handleGoToCheck(); handleMenuClose(); }}>
+							проверить
+						</div>
+						<div className={styles.menuItem} onClick={() => { handleGoToDownload(); handleMenuClose(); }}>
+							скачать
+						</div>
+					</div>
+				)}
 				<div className={styles.gen}>
 					<div className={styles.div}>генератор чисел</div>
 				</div>
@@ -105,41 +326,45 @@ const Home: FunctionComponent = () => {
 						</div>
 					</div>
 					<div className={styles.div8}>
-						{result ? (
-							Array.isArray(result) ? (
-								<div className={styles.multipleNumbers}>
-									{result.map((num, index) => (
-										<div key={index} className={styles.numberItem}>{num}</div>
-									))}
-								</div>
+						{isLoading ? (
+							<div className={styles.singleNumber} style={{opacity: 0.7, animation: 'pulse 0.5s infinite'}}>
+								{loadingNumber}
+							</div>
+						) : isUserGenerated ? (
+							result ? (
+								Array.isArray(result) ? (
+									<div className={styles.sequenceContainer}>
+										{result.length <= 5 ? (
+											<div className={styles.multipleNumbers}>
+												{result.map((num, index) => (
+													<div key={index} className={styles.numberItem}>{num}</div>
+												))}
+											</div>
+										) : (
+											<div className={styles.longSequence}>
+												<div className={styles.sequenceText}>
+													{result.slice(0, 3).join(', ')}... (+{result.length - 3} чисел)
+												</div>
+												<button 
+													className={styles.copyButton}
+													onClick={handleCopySequence}
+													disabled={copiedSequence}
+												>
+													{copiedSequence ? '✓ Скопировано' : '📋 Копировать'}
+												</button>
+											</div>
+										)}
+									</div>
+								) : (
+									<div className={styles.singleNumber}>{result}</div>
+								)
 							) : (
-								<div className={styles.singleNumber}>{result}</div>
+								<div className={styles.singleNumber}>404</div>
 							)
 						) : (
-							<div className={styles.singleNumber}>404</div>
+							<div className={styles.singleNumber}>{animatedNumber}</div>
 						)}
 						{isLoading && <div className={styles.loader}>генерация</div>}
-						{seed && (
-							<div className={styles.seedInfo}>
-								<div className={styles.seedLabel}>Сид:</div>
-								<div className={styles.seedValue}>{seed}</div>
-							</div>
-						)}
-						{graphs.length > 0 && (
-							<div className={styles.graphsContainer}>
-								<div className={styles.graphsLabel}>Графики звуков:</div>
-								<div className={styles.graphs}>
-									{graphs.map((graph, index) => (
-										<img 
-											key={index} 
-											src={graph} 
-											alt={`График звука ${index + 1}`}
-											className={styles.graphImage}
-										/>
-									))}
-								</div>
-							</div>
-						)}
 					</div>
 					<div className={styles.div3}>
 						<button className={styles.div4} onClick={handleGenerate}>
@@ -147,12 +372,6 @@ const Home: FunctionComponent = () => {
 						</button>
 						<button className={styles.div6} onClick={handleOpenFilters}>
 							<div className={styles.div7}>фильтры</div>
-						</button>
-						<button className={styles.div6} onClick={handleGoToCheck}>
-							<div className={styles.div7}>проверить</div>
-						</button>
-						<button className={styles.div6} onClick={handleGoToRecord}>
-							<div className={styles.div7}>записать</div>
 						</button>
 					</div>
 					<img src={SoundWave} draggable="false" className={styles.soundWave} alt="" />
@@ -240,7 +459,48 @@ const Home: FunctionComponent = () => {
 				<div className={styles.rngText}>RNG</div>
 				<div className={styles.entropyText}>Random Number Generation</div>
 				<img src={Arrow} className={styles.icon3} alt="" />
-				<div className={styles.finalNumber}>404</div>
+				<div className={styles.finalNumber}>
+					{isUserGenerated && result && !Array.isArray(result) ? result : '404'}
+				</div>
+				
+				{/* Источники звуков - добавляем после графиков */}
+				{sources && sources.length > 0 && (
+					<div className={styles.sourcesContainer}>
+						<div className={styles.sourcesLabel}>Источники звуков:</div>
+						<div className={styles.sources}>
+							{sources.map((source, index) => (
+								<div key={source.id} className={styles.sourceItem}>
+									<div className={styles.sourceName}>{source.name}</div>
+									<div className={styles.sourceLocation}>{source.city}, {source.country}</div>
+									<div className={styles.sourceArtist}>{source.artist}</div>
+									{isPlayingAudio && currentAudioIndex === index && (
+										<div className={styles.playingIndicator}>🔊 Воспроизведение...</div>
+									)}
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+				
+				{/* Кнопка воспроизведения */}
+				{!isPlayingAudio && sources && sources.length > 0 && (
+					<div className={styles.playAllContainer}>
+						<button 
+							className={styles.playButton}
+							onClick={() => playAudioSources()}
+						>
+							🔊 Воспроизвести все источники
+						</button>
+					</div>
+				)}
+				
+				{/* Сид - добавляем в самом низу */}
+				{seed && (
+					<div className={styles.finalSeed}>
+						<div className={styles.seedLabel}>Сид:</div>
+						<div className={styles.seedValue}>{seed}</div>
+					</div>
+				)}
 			</div>
 			<FiltersModal
 				isOpen={isFiltersOpen}
